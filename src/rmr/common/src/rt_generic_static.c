@@ -470,6 +470,7 @@ static rtable_ent_t* uta_add_rte( route_table_t* rt, uint64_t key, int nrrgroups
 	rtable_ent_t* rte;
 	rtable_ent_t* old_rte;		// entry which was already in the table for the key
 
+	printf("DK(%s) - key:%u, nrrgroups:%d\n", __func__, key, nrrgroups);
 	if( rt == NULL ) {
 		return NULL;
 	}

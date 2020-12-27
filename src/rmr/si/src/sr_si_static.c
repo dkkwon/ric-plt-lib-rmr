@@ -149,11 +149,16 @@ static rmr_mbuf_t* alloc_zcmsg( uta_ctx_t* ctx, rmr_mbuf_t* msg, int size, int s
 	int			tr_len;			// trace data len (default or override)
 	int*		alen;			// convenience pointer to set allocated len
 
+	printf("DK(%s) - size:%d, state:%d, trlo:%d, trace_data_len:%d\n", __func__, size, state, trlo, ctx->trace_data_len);
+
 	tr_len = trlo > 0 ? trlo : ctx->trace_data_len;
 
 	mlen = sizeof( uta_mhdr_t ) + tr_len + ctx->d1_len + ctx->d2_len;	// start with header and trace/data lengths
 	mlen += (size > 0 ? size  : ctx->max_plen);							// add user requested size or size set during init
 	mlen = sizeof( char ) * (mlen + TP_HDR_LEN);						// finally add the transport header len
+
+	printf("DK(%s) - mlen:%d, uta_mhdr_t:%d, tr_len:%d, d1_len:%d, d2_len:%d, max_plen:%d \n",
+	__func__, mlen, sizeof( uta_mhdr_t ), tr_len, ctx->d1_len, ctx->d2_len, ctx->max_plen);
 
 	if( msg == NULL && (msg = (rmr_mbuf_t *) uta_ring_extract( ctx->zcb_mring )) == NULL ) {
 		msg = (rmr_mbuf_t *) malloc( sizeof *msg );
