@@ -1,0 +1,20 @@
+		newrt | start
+			mse | 0 |  0 | localhost:4560,10.0.2.15:43086
+			mse | 1 | 10 | localhost:4560,dk-VirtualBox:43086
+			mse | 2 | 20 | localhost:4560
+			rte | 3 | localhost:4560
+			mse | 3 | 100 | localhost:4560	# special test to ensure that this does not affect previous entry
+			rte | 4 | localhost:4560
+			rte | 5 | localhost:4560
+			rte | 6 | localhost:4560
+			rte | 7 | localhost:4560
+			rte | 8 | localhost:4560
+			rte | 9 | localhost:4560
+			rte | 10 | localhost:4560
+			rte | 11 | localhost:4560
+			rte | 12 | localhost:4560
+			rte | 13 | localhost:4560
+		newrt | end
+
+head -3 app_test.rt
+
