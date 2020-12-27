@@ -155,25 +155,25 @@ int main( int argc, char** argv ) {
 		exit( 1 );
 	}
 
-	if( (rcv_fd = rmr_get_rcvfd( mrc )) >= 0 ) {			// epoll only available from NNG -- skip receive later if not NNG
-		if( rcv_fd < 0 ) {
-			fprintf( stderr, "<SNDR> unable to set up polling fd\n" );
-			exit( 1 );
-		}
-		if( (ep_fd = epoll_create1( 0 )) < 0 ) {
-			fprintf( stderr, "<SNDR> [FAIL] unable to create epoll fd: %d\n", errno );
-			exit( 1 );
-		}
-		epe.events = EPOLLIN;
-		epe.data.fd = rcv_fd;
+	// if( (rcv_fd = rmr_get_rcvfd( mrc )) >= 0 ) {			// epoll only available from NNG -- skip receive later if not NNG
+	// 	if( rcv_fd < 0 ) {
+	// 		fprintf( stderr, "<SNDR> unable to set up polling fd\n" );
+	// 		exit( 1 );
+	// 	}
+	// 	if( (ep_fd = epoll_create1( 0 )) < 0 ) {
+	// 		fprintf( stderr, "<SNDR> [FAIL] unable to create epoll fd: %d\n", errno );
+	// 		exit( 1 );
+	// 	}
+	// 	epe.events = EPOLLIN;
+	// 	epe.data.fd = rcv_fd;
 
-		if( epoll_ctl( ep_fd, EPOLL_CTL_ADD, rcv_fd, &epe ) != 0 )  {
-			fprintf( stderr, "<SNDR> [FAIL] epoll_ctl status not 0 : %s\n", strerror( errno ) );
-			exit( 1 );
-		}
-	} else {
-		rmr_set_rtimeout( mrc, 0 );			// for nano we must set the receive timeout to 0; non-blocking receive
-	}
+	// 	if( epoll_ctl( ep_fd, EPOLL_CTL_ADD, rcv_fd, &epe ) != 0 )  {
+	// 		fprintf( stderr, "<SNDR> [FAIL] epoll_ctl status not 0 : %s\n", strerror( errno ) );
+	// 		exit( 1 );
+	// 	}
+	// } else {
+	// 	rmr_set_rtimeout( mrc, 0 );			// for nano we must set the receive timeout to 0; non-blocking receive
+	// }
 
 	sbuf = rmr_alloc_msg( mrc, 1024 );	// alloc first send buffer; subsequent buffers allcoated on send
 	//sbuf = rmr_tralloc_msg( mrc, 1024, 11, "xxxxxxxxxx" );	// alloc first send buffer; subsequent buffers allcoated on send
@@ -314,10 +314,9 @@ int main( int argc, char** argv ) {
 		pass = 0;
 	}
 
-	fprintf( stderr, "<SNDR> [%s] sent=%d  rcvd=%d  rts-ok=%d failures=%d retries=%d\n", 
+	fprintf( stderr, "<SNDR> [%s] sent=%d  rcvd=%d  rts-ok=%d failures=%d retries=%d\n",
 		pass ? "PASS" : "FAIL",  count, rcvd_count, rts_ok, fail_count, rt_count );
 	rmr_close( mrc );
 
 	return !( count == nmsgs );
 }
-

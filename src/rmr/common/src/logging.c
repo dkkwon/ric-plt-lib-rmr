@@ -20,7 +20,7 @@
 /*
 	Mnemonic:	logging.c
 	Abstract:	Implements a common logging interface.
-		
+
 				Some thoughts and theory....
 				Libraries should write human readable messages to standard error
 				when errors, warnings, or general information messages are called
@@ -45,7 +45,7 @@
 				is unacceptable because it adds unnecessary checking for the current
 				verbosity level setting in line.
 
-	
+
 				With respect to formatting messages written to stderr: they should NOT
 				be written with json, or anyother form of mark up.  Idealy, they should
 				use a syntax similar to system log:
@@ -60,7 +60,7 @@
 				sap who is left having to read the output on some dark and stormy night).
 				To enable this, the environment veriable RMR_HRLOG=0 must be set to
 				turn off human readable logs.
-				
+
 	Author:		E. Scott Daniels
 	Date:		27 January 2020
 */
@@ -108,6 +108,7 @@ extern int rmr_vlog_init( ) {
 				log_vlevel = RMR_VL_DEBUG;
 			}
 		}
+		printf("DKDK - rmr_vlog_init - %d\n\n", log_vlevel);
 	}
 
 	log_pid = getpid();
@@ -134,6 +135,7 @@ extern void rmr_vlog( int write_level, char* fmt, ... ) {
 	char*	body;		// pointer into msg, past header
 
 	if( write_level > log_vlevel ) { 			// write too big, skip
+		printf("write_level:%d, log_vleve:%d\n", write_level, log_vlevel);
 		return;
 	}
 
@@ -199,7 +201,7 @@ extern void rmr_vlog_force( int write_level, char* fmt, ... ) {
 // -------------------- public functions that are needed -----------------
 
 /*
-	Allow user control to logging level control. Accepts a new log level 
+	Allow user control to logging level control. Accepts a new log level
 	from the user programme.  Messages which have a write level setting
 	which is >= to the new level will be written.  Setting the new value
 	to RMR_VL_OFF disables all logging (not advised).

@@ -168,6 +168,7 @@ int main( int argc, char** argv ) {
 						fprintf( stderr, "<RCVR> chk sum bad: computed=%d expected;%d (%s)\n", sum( data ), atoi( msg->payload ), data );
 						bad++;
 					}
+					printf("RMR_OK - %s\n", (char *) msg->payload);
 				}
 
 				if( (data = split( msg->payload, ' ' )) != NULL ) {			// data will point to the chksum for the trace data
@@ -228,7 +229,7 @@ int main( int argc, char** argv ) {
 	}
 
 	fprintf( stderr, "<RCVR> mtype histogram: %s\n", wbuf );
-	fprintf( stderr, "<RCVR> [%s] %ld messages;  good=%ld  acked=%ld bad=%ld  bad-trace=%ld bad-sub_id=%ld\n", 
+	fprintf( stderr, "<RCVR> [%s] %ld messages;  good=%ld  acked=%ld bad=%ld  bad-trace=%ld bad-sub_id=%ld\n",
 		!!(errors + bad + bad_tr) ? "FAIL" : "PASS", count, good, ack_count, bad, bad_tr, bad_sid );
 
 	sleep( 2 );									// let any outbound acks flow before closing
@@ -236,4 +237,3 @@ int main( int argc, char** argv ) {
 	rmr_close( mrc );
 	return !!(errors + bad + bad_tr);			// bad rc if any are !0
 }
-
