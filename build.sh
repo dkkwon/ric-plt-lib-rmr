@@ -19,7 +19,7 @@ rm -rf .build
 sudo /usr/local/lib/librmr*.*
 mkdir -p .build && cd .build || exit
 # cmake ..
-cmake .. -DDEBUG=5
+cmake .. -DDEBUG=1
 make package
 sudo make install
 sudo ldconfig
